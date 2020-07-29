@@ -124,7 +124,7 @@ if __name__ == '__main__':
     num_generated = 0
     
     if args.load == True :
-        embed = np.load("encoded_voice.py")
+        embed = np.load("encoded_voice.npy")
     else:
         # Get the reference audio filepath
         #message = "Reference voice: enter an audio filepath of a voice to be cloned(Введите путь до клонируемого файла, например ex.wav) (mp3, " \
@@ -149,6 +149,7 @@ if __name__ == '__main__':
         # only use this function (with its default parameters):
         embed = encoder.embed_utterance(preprocessed_wav)
         print("Created the embedding")
+        np.save("encoded_voice.npy", embed)
     
     
     ## Generating the spectrogram
