@@ -148,8 +148,9 @@ if __name__ == '__main__':
         # speaker encoder interfaces. These are mostly for in-depth research. You will typically
         # only use this function (with its default parameters):
         embed = encoder.embed_utterance(preprocessed_wav)
+        embed_2 = encode.embed_utterance(preprocessed_wav, using_partials=False)
         print("Created the embedding")
-        np.save("encoded_voice.npy", embed)
+        np.save("encoded_voice.npy", embed_2)
     
     
     ## Generating the spectrogram
@@ -171,7 +172,7 @@ if __name__ == '__main__':
     print("Synthesizing the waveform:")
     # Synthesizing the waveform is fairly straightforward. Remember that the longer the
     # spectrogram, the more time-efficient the vocoder.
-    generated_wav = vocoder.infer_waveform(spec)
+    generated_wav = vocoder.infer_waveform(spec, batched=False, target=16000)
     
     
     ## Post-generation
