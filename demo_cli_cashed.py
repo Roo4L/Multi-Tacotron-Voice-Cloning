@@ -70,7 +70,7 @@ if __name__ == '__main__':
     synthesizer = Synthesizer(args.syn_model_dir.joinpath("taco_pretrained"), low_mem=args.low_mem)
     vocoder.load_model(args.voc_model_fpath)
     
-    
+    """
     ## Run a test
     print("Testing your configuration with small inputs.")
     # Forward an audio waveform of zeroes that lasts 1 second. Notice how we can get the encoder's
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     vocoder.infer_waveform(mel, target=200, overlap=50, progress_callback=no_action)
     
     print("All test passed! You can now synthesize speech.\n\n")
-    
+    """
     
     ## Interactive speech generation
     print("This is a GUI-less example of interface to SV2TTS. The purpose of this script is to "
