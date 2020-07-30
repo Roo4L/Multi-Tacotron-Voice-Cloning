@@ -172,7 +172,7 @@ if __name__ == '__main__':
     print("Synthesizing the waveform:")
     # Synthesizing the waveform is fairly straightforward. Remember that the longer the
     # spectrogram, the more time-efficient the vocoder.
-    generated_wav = vocoder.infer_waveform(spec, batched=False, target=16000)
+    generated_wav = vocoder.infer_waveform(spec)
     
     
     ## Post-generation
