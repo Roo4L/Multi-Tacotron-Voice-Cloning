@@ -148,7 +148,7 @@ if __name__ == '__main__':
         # speaker encoder interfaces. These are mostly for in-depth research. You will typically
         # only use this function (with its default parameters):
         embed = encoder.embed_utterance(preprocessed_wav)
-        embed_2 = encode.embed_utterance(preprocessed_wav, using_partials=False)
+        embed_2 = encoder.embed_utterance(preprocessed_wav, using_partials=False)
         print("Created the embedding")
         np.save("encoded_voice.npy", embed_2)
     
