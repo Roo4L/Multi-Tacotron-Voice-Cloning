@@ -39,4 +39,4 @@ if __name__ == "__main__":
     # Preprocess the dataset
     print_args(args, parser)
     args.hparams = hparams.parse(args.hparams)
-    preprocess_sst(**vars(args))    
+    preprocess_pushnoi(**vars(args))    

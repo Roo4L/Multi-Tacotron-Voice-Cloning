@@ -142,6 +142,52 @@ def preprocess_sst(datasets_root: Path, out_dir: Path, n_processes: int,
     print("Max mel frames length: %d" % max(int(m[4]) for m in metadata))
     print("Max audio timesteps length: %d" % max(int(m[3]) for m in metadata))
     #print(txt_paths)
+def preprocess_pushnoi(datasets_root: Path, out_dir: Path, n_processes: int, 
+                           skip_existing: bool, hparams):
+
+   # Gather the input directories
+    #dataset_root = datasets_root.joinpath("academ")
+    #dataset_root = datasets_root.joinpath("mozilla")
+    input_dirs = datasets_root.joinpath("pushnoi")
+
+    print("\n    ".join(map(str, ["Using data from:"] + input_dirs)))
+    assert all(input_dir.exists() for input_dir in input_dirs)
+    
+    # Create the output directories for each output file type
+    out_dir.joinpath("mels").mkdir(exist_ok=True)
+    out_dir.joinpath("audio").mkdir(exist_ok=True)
+    
+    # Create a metadata file
+    metadata_fpath = out_dir.joinpath("train.txt")
+    metadata_file = metadata_fpath.open("a" if skip_existing else "w", encoding="utf-8")
+
+    # Preprocess the dataset
+    #speaker_dirs = list(chain.from_iterable(input_dir.glob("*") for input_dir in input_dirs))
+    speaker_dirs = input_dirs
+    #print(speaker_dirs)
+    func = partial(my_preprocess_speaker, out_dir=out_dir, skip_existing=skip_existing, 
+                   hparams=hparams)
+    job = Pool(n_processes).imap(func, speaker_dirs)
+    #print(job) 
+    for speaker_metadata in tqdm(job, "PushnoiSpeech", len(speaker_dirs), unit="speakers"):
+        #print(speaker_metadata)
+        for metadatum in speaker_metadata:
+            #print(metadatum)
+            metadata_file.write("|".join(str(x) for x in metadatum) + "\n")
+    metadata_file.close()
+
+    # Verify the contents of the metadata file
+    with metadata_fpath.open("r", encoding="utf-8") as metadata_file:
+        metadata = [line.split("|") for line in metadata_file]
+    mel_frames = sum([int(m[4]) for m in metadata])
+    timesteps = sum([int(m[3]) for m in metadata])
+    sample_rate = hparams.sample_rate
+    hours = (timesteps / sample_rate) / 3600
+    print("The dataset consists of %d utterances, %d mel frames, %d audio timesteps (%.2f hours)." %
+          (len(metadata), mel_frames, timesteps, hours))
+    print("Max input length (text chars): %d" % max(len(m[5]) for m in metadata))
+    print("Max mel frames length: %d" % max(int(m[4]) for m in metadata))
+    print("Max audio timesteps length: %d" % max(int(m[3]) for m in metadata))
 
 def preprocess_speaker_sst(speaker_dir, out_dir: Path, skip_existing: bool, hparams):
     metadata = []
@@ -177,6 +223,29 @@ def preprocess_speaker_sst(speaker_dir, out_dir: Path, skip_existing: bool, hpar
                     skip_existing, hparams))
             index += 1
     return [m for m in metadata if m is not None] 
+
+def my_preprocess_speaker(speaker_dir, out_dir: Path, skip_existing: bool,hparams):
+    metadata = []
+    lines = []
+    texts = []
+    index = 1
+    with open(os.path.join(speaker_dir, 'metadata.csv'), encoding='utf-8') as f:
+        for line in f:
+            parts = line.strip().split('|')
+            basename = parts[0]
+            text = parts[1]            
+            lines.append(basename)
+            texts.append(text)
+        texts = g2p(texts)
+        for basename, text in zip(lines,texts):
+            wav_path = os.path.join(speaker_dir, '{}.wav'.format(basename))
+            wav, _ = librosa.load(wav_path, hparams.sample_rate)
+            if hparams.rescale:
+                wav = wav / np.abs(wav).max() * hparams.rescaling_max
+            metadata.append(process_utterance(wav, text, out_dir, basename, 
+                    skip_existing, hparams))
+            index += 1
+    return [m for m in metadata if m is not None]
 
 def preprocess_speaker2(speaker_dir, out_dir: Path, skip_existing: bool, hparams):
     metadata = []
