@@ -148,7 +148,7 @@ def preprocess_pushnoi(datasets_root: Path, out_dir: Path, n_processes: int,
    # Gather the input directories
     #dataset_root = datasets_root.joinpath("academ")
     #dataset_root = datasets_root.joinpath("mozilla")
-    input_dirs = datasets_root.joinpath("pushnoi")
+    input_dirs = [datasets_root.joinpath("pushnoi")]
 
     print("\n    ".join(map(str, ["Using data from:"] + input_dirs)))
     assert all(input_dir.exists() for input_dir in input_dirs)
