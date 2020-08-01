@@ -118,7 +118,7 @@ hparams = HParams(
     n_fft=1024,  # Extra window size is filled with 0 paddings to match this parameter
     hop_size=200,  # For 16000Hz, 200 = 12.5 ms (0.0125 * sample_rate)
     win_size=800,  # For 16000Hz, 800 = 50 ms (If None, win_size = n_fft) (0.05 * sample_rate)
-    sample_rate=32000,  # 16000Hz (corresponding to librispeech) (sox --i <filename>) 
+    sample_rate=16000,  # 16000Hz (corresponding to librispeech) (sox --i <filename>) 
     #n_fft=4096,  # Extra window size is filled with 0 paddings to match this parameter
     #hop_size=551,  # For 16000Hz, 200 = 12.5 ms (0.0125 * sample_rate)
     #win_size=2205,  # For 16000Hz, 800 = 50 ms (If None, win_size = n_fft) (0.05 * sample_rate)

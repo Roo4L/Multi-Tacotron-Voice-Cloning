@@ -6,9 +6,9 @@ mel_n_channels = 40
 
 
 ## Audio
-sampling_rate = 32000 # (16000)
+sampling_rate = 16000 # (16000)
 # Number of spectrogram frames in a partial utterance
-partials_n_frames = 500     # 1600 ms (160)
+partials_n_frames = 200     # 1600 ms (160)
 # Number of spectrogram frames at inference
 inference_n_frames = 160     #  800 ms (80)
 
