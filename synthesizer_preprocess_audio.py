@@ -1,6 +1,7 @@
 from synthesizer.preprocess import preprocess_book
 from synthesizer.preprocess import preprocess_librispeech
 from synthesizer.preprocess import preprocess_sst
+from synthesizer.preprocess import preprocess_pushnoi
 from synthesizer.hparams import hparams
 from utils.argutils import print_args
 from pathlib import Path

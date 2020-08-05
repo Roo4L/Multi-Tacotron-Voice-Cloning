@@ -98,7 +98,7 @@ hparams = HParams(
     clip_mels_length=True,
     # For cases of OOM (Not really recommended, only use if facing unsolvable OOM errors, 
 	# also consider clipping your samples to smaller chunks)
-    max_mel_frames=700,
+    max_mel_frames=2000,
     # Only relevant when clip_mels_length = True, please only use after trying output_per_steps=3
 	#  and still getting OOM errors.
     
