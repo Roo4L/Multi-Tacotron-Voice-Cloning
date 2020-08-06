@@ -150,10 +150,8 @@ if __name__ == '__main__':
         print("\nSaved output as %s\n\n" % fpath)
         
         print("original(оригинал)")
-        ipd.display(ipd.Audio(args.path_wav))#filepath to original voices (Путь до оригинального файла)
+        ipd.display(ipd.Audio(str(args.path_wav)))#filepath to original voices (Путь до оригинального файла)
         print("cloned(клонированный)")
-        ipd.display(ipd.Audio('demo_output_%02d.wav' % num_generated)#filepath to synthesized voices (Путь до синтезированного файла)
-
+        ipd.display(ipd.Audio('demo_output_%02d.wav' % num_generated))#filepath to synthesized voices (Путь до синтезированного файла)
         num_generated += 1
-
         text = input("Write a sentence (+-20 words) to be synthesized:(Введите предложение для синтеза)\n")
